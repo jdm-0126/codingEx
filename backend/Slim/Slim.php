@@ -222,7 +222,6 @@ class Slim
         $this->middleware = array($this);
         $this->add(new \Slim\Middleware\Flash());
         $this->add(new \Slim\Middleware\MethodOverride());
-        $app->add(new \Slim\Middleware\OAuth());
         
 
         // Make default if first instance

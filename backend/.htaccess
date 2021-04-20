@@ -6,6 +6,9 @@ RewriteEngine On
 #
 # RewriteBase /
 
+header add Access-Control-Allow-Origin "*"
+header add Access-Control-Allow-Headers "X-Requested-With, Content-Type, Origin, Cache-Control, Pragma, Authorization, Accept, Accept-Encoding"
+header add Access-Control-Allow-Methods "PUT, POST, GET, OPTIONS, DELETE"
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]
