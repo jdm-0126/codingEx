@@ -15,7 +15,6 @@ export class LoginComponent implements OnInit {
     this.formGroup = this.fb.group({
       email: ['', [Validators.required,Validators.minLength(1), Validators.email]],
       password: ['', Validators.required]
-
     });
    }
 
@@ -27,14 +26,14 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
           data => {
-                // const redirect = this.dataService.redirectUrl ? this.dataService.redirectUrl : '/dashboard';
-                // this.router.navigate([redirect]);
+                const redirect = this.dataService.redirectUrl ? this.dataService.redirectUrl : '/dashboard';
+                this.router.navigate([redirect]);
 
           },
           error => {
               alert("Email or password is incorrect")
           });
   }
-  // get email() { return this.formGroup.get('email'); }
-  // get password() { return this.formGroup.get('password'); }
+  get email() { return this.formGroup.get('email'); }
+  get password() { return this.formGroup.get('password'); }
 }

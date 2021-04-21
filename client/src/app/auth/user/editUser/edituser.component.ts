@@ -11,24 +11,22 @@ import { DataserviceService } from '../../../service/dataservice.service';
 })
 export class EdituserComponent implements OnInit {
 
-  formGroup;
+  formGroup: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private dataService: DataserviceService,private router:Router) {
 
     this.formGroup = this.fb.group({
-      email: ['', [Validators.required,Validators.minLength(1), Validators.email]],
-      password: ['', Validators.required],
+      id: [''],
       name: ['', Validators.required],
-      token: [''],
-      id: ['']
-
+      email: ['', [Validators.required,Validators.minLength(1), Validators.email]],
+      password: ['', Validators.required]
     });
    }
 
   ngOnInit() {
-    let id = window.localStorage.getItem("editid");
+    let id = localStorage.getItem('editId');
     if(!id) {
       this.router.navigate(['list-user']);
       return;

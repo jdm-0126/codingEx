@@ -13,10 +13,11 @@ const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
-  { path: 'create', component: CreateuserComponent,canActivate: [AuthguardGuard] },
-  { path: 'edit', component: EdituserComponent,canActivate: [AuthguardGuard] },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'product', component: ProductComponent }
+  // { path: 'create', component: CreateuserComponent,canActivate: [AuthguardGuard] },
+  { path: 'create', component: CreateuserComponent },
+  { path: 'edit', component: EdituserComponent},
+  { path: 'dashboard', component: DashboardComponent},
+  { path: 'product', component: ProductComponent}
 
 ]
 

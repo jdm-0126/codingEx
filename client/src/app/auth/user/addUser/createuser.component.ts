@@ -10,7 +10,7 @@ import { DataserviceService } from '../../../service/dataservice.service';
   styleUrls: ['./createuser.component.css']
 })
 export class CreateuserComponent implements OnInit {
-  formGroup: any;
+  formGroup;
 
   constructor(private fb: FormBuilder,private dataService: DataserviceService,private router:Router) {
 
@@ -18,8 +18,6 @@ export class CreateuserComponent implements OnInit {
       email: ['', [Validators.required,Validators.minLength(1), Validators.email]],
       password: ['', Validators.required],
       name: ['', Validators.required],
-      token: ['', Validators.required]
-
     });
    }
 

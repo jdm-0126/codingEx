@@ -7,6 +7,8 @@ require 'Slim/Slim.php';
 $app = new \Slim\Slim();
 
 $app->get('/product', 'getProducts');
+$app->get('/category', 'getCategory');
+$app->get('/brand', 'getBrand');
 $app->post('/product', 'addProduct');
 $app->put('/product/:id', 'updateProduct');
 $app->delete('/product/:id', 'deleteProduct');
@@ -34,6 +36,32 @@ function getProducts() {
 }
 
 //Select All
+function getCategory() {
+    try {
+        $db = getConnection();
+        $stmt = $db->query('CALL get_productsCat()');
+        $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+        echo json_encode($data);
+    } catch (PDOException $e) {
+        echo $e.getMessage();
+    }
+    
+}
+
+//Select All
+function getBrand() {
+    try {
+        $db = getConnection();
+        $stmt = $db->query('CALL get_category_child()');
+        $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+        echo json_encode($data);
+    } catch (PDOException $e) {
+        echo $e.getMessage();
+    }
+    
+}
+
+//Select All
 function getUsers() {
     try {
         $db = getConnection();
@@ -50,17 +78,26 @@ function getUsers() {
 function logUser() {
     global $app;
     $data = json_decode($app->request()->getBody());
-    $email = json_decode($app->request()->getBody('email'));
-    $password = json_decode($app->request()->getBody('password'));
-    $sql = "select * from user where email='$email' && password ='$password'";
+    // $email = json_decode($app->request()->getBody('email'));
+    // $password = json_decode($app->request()->getBody('password'));
+    $email = $data->email;
+    $password = $data->password;
+    $sql = "select * from user where email='$email' AND password ='$password'";
     try {
         $db = getConnection();
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam(0, $data->email);
-        $stmt->bindParam(1, $data->password);
-        $stmt->execute();
+        $stmt = $db->query($sql);
+        $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+        // $stmt->bindParam(2, $data->email);
+        // $stmt->bindParam(3, $data->password);
+        // $result = $stmt->execute();
+        if (!empty($data)) {
+            echo json_encode(['status' => 'success', 'email' => $data[0]->email]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Incorrect username / password']);
+        }
     } catch (PDOException $e) {
-        echo $e.getMessage();
+        // echo $e.getMessage();
+        echo $e;
     }    
 }
 
@@ -72,10 +109,10 @@ function addProduct() {
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(1, $data->id);
-        $stmt->bindParam(2, $data->name);
-        $stmt->bindParam(3, $data->address);
-        $stmt->bindParam(4, $data->hobbies);
+        $stmt->bindParam(1, $data->label_id);
+        $stmt->bindParam(2, $data->label);
+        $stmt->bindParam(3, $data->route);
+        $stmt->bindParam(4, $data->parent_id);
         $stmt->execute();
     } catch (PDOException $e) {
         echo $e.getMessage();
@@ -86,7 +123,7 @@ function addProduct() {
 function addUser() {
     global $app;
     $data = json_decode($app->request()->getBody());
-    $sql = "insert into user values(?,?,?,?,?)";
+    $sql = "insert into user values(?,?,?,?)";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -94,7 +131,6 @@ function addUser() {
         $stmt->bindParam(2, $data->name);
         $stmt->bindParam(3, $data->email);
         $stmt->bindParam(4, $data->password);
-        $stmt->bindParam(5, $data->token);
         $stmt->execute();
     } catch (PDOException $e) {
         echo $e.getMessage();
@@ -105,13 +141,13 @@ function addUser() {
 function updateProduct($id) {
     global $app;
     $data = json_decode($app->request()->getBody());
-    $sql = "update products set name=?,route=?,data=? where id = ?";
+    $sql = "update products set parendt_id=?, label=?,route=? where label_id = ?";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(1, $data->name);
-        $stmt->bindParam(2, $data->address);
-        $stmt->bindParam(3, $data->hobbies);
+        $stmt->bindParam(1, $data->label);
+        $stmt->bindParam(2, $data->route);
+        $stmt->bindParam(3, $data->parendt_id);
         $stmt->bindParam(4, $id);
         $stmt->execute();
     } catch (PDOException $e) {
@@ -131,7 +167,6 @@ function updateUser($id) {
         $stmt->bindParam(2, $data->email);
         $stmt->bindParam(3, $data->password);
         $stmt->bindParam(4, $id);
-        $stmt->bindParam(5, $data->token);
         $stmt->execute();
     } catch (PDOException $e) {
         echo $e.getMessage();
@@ -140,7 +175,7 @@ function updateUser($id) {
 
 //Delete Data
 function deleteProduct($id) {
-    $sql = "delete from products where id = :id";
+    $sql = "delete from products where label_id = :id";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -167,13 +202,12 @@ function deleteUser($id) {
 //Connection Database
 function getConnection() {
     header('Access-Control-Allow-Origin:*'); 
-header('Access-Control-Allow-Headers:X-Request-With');
-
-header('Access-Control-Allow-Methods: DELETE, PUT, GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+    header('Access-Control-Allow-Headers:X-Request-With');
+    header('Access-Control-Allow-Methods: DELETE, PUT, GET, POST, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
     $dbhost = "127.0.0.1";
     $dbuser = "root";
-    $dbpass = "";
+    $dbpass = "root";
     $dbname = "coding_chief";
     $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

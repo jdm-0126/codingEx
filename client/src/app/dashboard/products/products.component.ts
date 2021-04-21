@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataserviceService } from '../../service/dataservice.service';
-import { Usermodule } from '../../auth/user/usermodule';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { IBrand, ICategory, Productmodule } from 'src/app/models/product.models';
 
 @Component({
   selector: 'app-product',
@@ -10,46 +10,59 @@ import { Router } from '@angular/router';
   styleUrls: ['./products.component.css']
 })
 export class ProductComponent implements OnInit {
-  users: Usermodule[] = [];
+  products: Productmodule[] = [];
+  categories: ICategory[] = [];
+  brands: IBrand[] = [];
   cat: any;
 
   constructor(private dataService: DataserviceService,private router:Router) { }
 
   ngOnInit() {
-    this.getuserdetails();
+    this.getProdDetails();
+    this.getCategories();
+    this.getBrand();
 
   }
-getuserdetails()
+  getProdDetails()
 {
-  this.dataService.getAllUsers(this.cat).subscribe(response =>
+  this.dataService.getAllItems(this.cat).subscribe(response =>
     {
-      this.users = response.map(item =>
-      {
-        return new Usermodule(
-          item.id,
-            item.name,
-            item.password,
-            item.email,
-            item.token,
-        );
-      });
+      this.products = response;
     });
-}
-deleteuserdetails(user:Usermodule)
+  }
+
+  getCategories() {
+    {
+      this.dataService.getAllCat(this.cat).subscribe(response =>
+        {
+          this.categories = response;
+        });
+      }
+  }
+
+  getBrand() {
+    {
+      this.dataService.getAllBrand(this.cat).subscribe(response =>
+        {
+          this.brands = response;
+        });
+      }
+  }
+
+deleteProduct(product:Productmodule)
 {
-  this.dataService.removeUser(user.id)
-  .subscribe( data => {
-    //this.users = this.users.filter(u => u !== user);
-    this.getuserdetails();
+  this.dataService.removeUser(product.label_id)
+  .subscribe(() => {
+    this.getProdDetails();
   })
 
 }
-updateUser(user: Usermodule): void {
-  window.localStorage.removeItem("editId");
-  window.localStorage.setItem("editId", user.id.toString());
-  this.router.navigate(['edit']);
+updateProduct(product: Productmodule): void {
+  window.localStorage.removeItem("product");
+  window.localStorage.setItem("product", product.label_id.toString());
+  this.router.navigate(['product']);
 };
-addUser(): void {
+addProduct(): void {
   this.router.navigate(['create']);
 };
 }

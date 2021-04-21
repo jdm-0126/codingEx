@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataserviceService } from '../service/dataservice.service';
-import { Usermodule } from '../auth/user/usermodule';
+import { Usermodule } from '../models/user.models';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -29,8 +29,7 @@ getuserdetails()
           item.id,
             item.name,
             item.password,
-            item.email,
-            item.token,
+            item.email
         );
       });
     });
