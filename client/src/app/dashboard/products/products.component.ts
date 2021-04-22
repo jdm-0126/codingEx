@@ -10,12 +10,12 @@ import { AccountService } from 'src/app/service';
   styleUrls: ['./products.component.css']
 })
 export class ProductComponent implements OnInit {
-  products: Productmodule[] = [];
+  products: any = [];
   categories: ICategory[] = [];
   brands: IBrand[] = [];
-  items: any;
-  cat: any;
-
+  items: IItem[] =[];
+  saveProduct: boolean = true;
+  saveCat: boolean = true;
   constructor(private dataService: AccountService,private router:Router) { }
 
   ngOnInit() {
@@ -68,11 +68,23 @@ deleteProduct(product:Productmodule)
 
 }
 updateProduct(product: Productmodule): void {
-  window.localStorage.removeItem("product");
-  window.localStorage.setItem("product", product.label_id.toString());
-  this.router.navigate(['product']);
+  window.localStorage.removeItem("editId");
+  window.localStorage.setItem("editId", product.label_id.toString());
+  this.router.navigate(['addproduct']);
 };
 addProduct(): void {
-  this.router.navigate(['create']);
+  this.router.navigate(['addproduct']);
 };
+
+
+onProductChanged(value:boolean){
+  this.saveProduct = value;
 }
+
+onCatChanged(value:boolean){
+  this.saveCat = value;
+}
+
+
+}
+

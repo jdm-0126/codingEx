@@ -2,8 +2,8 @@ export interface Productmodule{
     label_id: number;
     label: string;
     route: boolean;
-    product_id: ICategory['label_id'];
- 
+    product_id?: ICategory['label_id'];
+
     // constructor(label_id:number,label: string,route:boolean) {
     //   this.label_id = label_id;
     //   this.label = label;

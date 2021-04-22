@@ -6,6 +6,6 @@ export const environment = {
   production: false,
   env_name: 'dev',
   baseHREF: 'http://localhost:4200/',
-  apiUrl: 'http://localhost:8000/api/',
+  apiUrl: 'http://localhost:8000',
 };
 

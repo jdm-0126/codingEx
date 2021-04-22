@@ -11,7 +11,7 @@ import { AccountService, AlertService} from '../../../service';
 })
 export class EdituserComponent implements OnInit {
   formGroup: any;
-  id: number = 0;
+  id: any;
   isAddMode: boolean = false;
   loading = false;
   submitted = false;

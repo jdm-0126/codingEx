@@ -1,0 +1,156 @@
+<h1 *ngIf="isAddMode">Add Product</h1>
+<h1 *ngIf="!isAddMode">Edit Product</h1>
+<div class="d-flex align-items-center">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="jumbotron">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <h1>Product </h1>
+          <div class="form-row d-flex justify-content-space-between">
+            <div class="form-group col-md-6">
+              <label for="label">Label</label>
+              <input type="text" formControlName="name" class="form-control" />
+
+            </div>
+            <div class="form-group col-md-6">
+              <label for="exampleSelect1">With Sub Items?</label>
+              <select formControlName="route" class="form-control" id="exampleSelect1">
+                <option ngValue="true">True</option>
+                <option ngValue="false">False</option>
+                <!-- <option *ngFor="let s of stateFiscalYearList" [ngValue]="s">{{ s }}</option> -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button [disabled]="loading" class="btn btn-primary">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+              Save
+            </button>
+            <a routerLink="/users" class="btn btn-link">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- category *ngIf="product_has_child"-->
+    <div class="col-md-6 col-md-offset-3">
+      <div class="jumbotron">
+        <form [attr.formGroup]="formCat" (ngSubmit)="onSubmitCat()">
+          <h1>Category </h1>
+          <div class="form-row d-flex justify-content-space-between">
+            <div class="form-group col-md-6">
+              <label for="label">Label</label>
+              <input type="text" formControlName="label" class="form-control" />
+            </div>
+            <div class="form-group col-md-6">
+              <label>With Sub Items?</label>
+              <select formControlName="category" class="form-control" id="exampleSelect1">
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Brands</label>
+              <select formControlName="category" class="form-control" id="exampleSelect1">
+                <option >Select Brand</option>
+                <option *ngFor="let brand of brands" value="brand.label">{{ brand.label }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button [disabled]="loading" class="btn btn-primary">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+              Save
+            </button>
+            <a routerLink="/users" class="btn btn-link">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+
+
+</div>
+<!-- brand -->
+<div class="d-flex align-items-center">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="jumbotron">
+      <form [attr.formGroup]="formBrand" (ngSubmit)="onSubmitBrand()">
+        <h1>Brand </h1>
+        <div class="form-row d-flex justify-content-space-between">
+          <div class="form-group col-md-6">
+            <label for="label">Label</label>
+            <input type="text" formControlName="label" class="form-control" />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="exampleSelect1">With Sub Items?</label>
+            <select class="form-control" id="exampleSelect1">
+              <option>True</option>
+              <option>False</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Items</label>
+            <div class="form-group col-md-6">
+              <label for="label">Add new brand</label>
+              <input type="text" formControlName="label" class="form-control" />
+            </div>
+            OR Select Item
+            <select formControlName="category" class="form-control" id="exampleSelect1">
+              <option >Select Items</option>
+              <option *ngFor="let item of items" value="item.label">{{ item.label }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save
+          </button>
+          <a routerLink="/users" class="btn btn-link">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- category -->
+  <div class="col-md-6 col-md-offset-3">
+    <div class="jumbotron">
+      <form [attr.formGroup]="formItem" (ngSubmit)="onSubmitItem()">
+        <h1>Item </h1>
+        <div class="form-row d-flex justify-content-space-between">
+          <div class="form-group col-md-6">
+            <label for="label">Label</label>
+            <input type="text" formControlName="label" class="form-control" />
+
+          </div>
+          <div class="form-group col-md-6">
+            <label for="exampleSelect1">With Sub Items?</label>
+            <select class="form-control" id="exampleSelect1">
+              <option>True</option>
+              <option>False</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="label">Add New Item</label>
+            <input type="text" formControlName="label" class="form-control" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save
+          </button>
+          <a routerLink="/users" class="btn btn-link">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+
+</div>
+

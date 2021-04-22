@@ -88,22 +88,6 @@ class MethodOverride extends \Slim\Middleware
                 $env['slim.method_override.original_method'] = $env['REQUEST_METHOD'];
                 $env['REQUEST_METHOD'] = strtoupper($method);
             }
-        } elseif (isset($env['REQUEST_METHOD']) && $env['REQUEST_METHOD'] === 'DELETE') {
-            // HTML Form Override
-            $req = new \Slim\Http\Request($env);
-            $method = $req->post($this->settings['key']);
-            if ($method) {
-                $env['slim.method_override.original_method'] = $env['REQUEST_METHOD'];
-                $env['REQUEST_METHOD'] = strtoupper($method);
-            }
-        } elseif (isset($env['REQUEST_METHOD']) && $env['REQUEST_METHOD'] === 'PUT') {
-            // HTML Form Override
-            $req = new \Slim\Http\Request($env);
-            $method = $req->post($this->settings['key']);
-            if ($method) {
-                $env['slim.method_override.original_method'] = $env['REQUEST_METHOD'];
-                $env['REQUEST_METHOD'] = strtoupper($method);
-            }
         } elseif (isset($env['REQUEST_METHOD']) && $env['REQUEST_METHOD'] === 'GET') {
             // HTML Form Override
             $req = new \Slim\Http\Request($env);

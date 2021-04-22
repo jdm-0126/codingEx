@@ -6,7 +6,7 @@
 export const environmentlocal = {
     production: false,
     env_name: 'dev-local',
-    baseAPI: 'http://localhost:3000/api/',
+    baseAPI: 'http://localhost:8000/',
     baseHREF: 'http://localhost:4200/',
     recaptcha_key: '6LdkLG4UAAAAAPbdaebrxAZ6hYRdYOr334wJJoc5'
 };

@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usermodule } from '../models/user.models';
-import { IBrand, ICategory, Productmodule } from '../models/product.models';
+import { IBrand, ICategory, IItem, Productmodule } from '../models/product.models';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -30,25 +30,24 @@ userregistration(user: Usermodule) {
       }));
 }
 updateuserdetails(id: number, params: any) {
-  return this.httpClient.put(`${environment.apiUrl}/users/${id}`, params)
+  return this.httpClient.put(`${environment.apiUrl}/user/${id}`, params)
     .pipe(map(Usermodule => {
           return Usermodule;
       }));
-
 }
 removeUser(empid: number): Observable<Usermodule[]> {
   return this.httpClient.delete<Usermodule[]>
   (this.baseUrl+'/user/'+empid );
 }
 
-public getUserId(empid: number): Observable<Usermodule[]>
+getUserId(empid: number): Observable<Usermodule[]>
   {
     return this.httpClient.get<Usermodule[]>
     (this.baseUrl+'/user/'+ empid );
   }
 
   getById(id: number) {
-    return this.httpClient.get<Usermodule>(`${environment.apiUrl}/users/${id}`);
+    return this.httpClient.get<Usermodule>(`${environment.apiUrl}/user/${id}`);
 }
 getAllUsers(id: number) : Observable<Usermodule[] > {
   return this.httpClient.get<Usermodule[]>(this.baseUrl+'/user');
@@ -57,6 +56,38 @@ getAllUsers(id: number) : Observable<Usermodule[] > {
 getAllProducts() : Observable<Productmodule[] > {
   return this.httpClient.get<Productmodule[]>(this.baseUrl+'/product');
 }
+
+addProduct(product: Productmodule) {
+  return this.httpClient.post<any>(this.baseUrl + '/product', product)
+      .pipe(map(Productmodule => {
+          return Productmodule;
+      }));
+}
+addCat(cat: ICategory) {
+  return this.httpClient.post<any>(this.baseUrl + '/category', cat)
+      .pipe(map(ICategory => {
+          return ICategory;
+      }));
+}
+addBrand(brand: IBrand) {
+  return this.httpClient.post<any>(this.baseUrl + '/brand', brand)
+      .pipe(map(IBrand => {
+          return IBrand;
+      }));
+}
+addItem(item: IItem) {
+  return this.httpClient.post<any>(this.baseUrl + '/item', item)
+      .pipe(map(IItem => {
+          return IItem;
+      }));
+}
+updateProduct(id: number, params: any) {
+  return this.httpClient.put(`${environment.apiUrl}/product/${id}`, params)
+    .pipe(map(Productmodule => {
+          return Productmodule;
+      }));
+}
+
 getAllCat() : Observable<ICategory[] > {
   return this.httpClient.get<ICategory[]>(this.baseUrl+'/category');
 }
@@ -65,8 +96,8 @@ getAllBrand() : Observable<IBrand[] > {
   return this.httpClient.get<IBrand[]>(this.baseUrl+'/brand');
 }
 
-getItems() : Observable<Productmodule[] > {
-  return this.httpClient.get<Productmodule[]>(this.baseUrl+'/item');
+getItems() : Observable<IItem[] > {
+  return this.httpClient.get<IItem[]>(this.baseUrl+'/item');
 }
 
 //token

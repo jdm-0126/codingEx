@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductRoutingModule } from './products/product-routing.module';
-import { ProductComponent } from './products/products.component';
 import { DashboardComponent } from './dashboard.component';
 
 
@@ -13,6 +12,7 @@ import { DashboardComponent } from './dashboard.component';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     ProductRoutingModule,
     HttpClientModule,
     ReactiveFormsModule
