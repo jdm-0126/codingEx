@@ -1,28 +1,23 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RegistrationComponent } from './auth/register/registration.component';
-import {LoginComponent } from "./auth/login/login.component"
-import { AuthguardGuard } from './auth/authguard.guard';
-import { CreateuserComponent } from "./auth/user/addUser/createuser.component"
-import { EdituserComponent } from "./auth/user/editUser/edituser.component"
-import { DashboardComponent } from "./dashboard/dashboard.component"
-import { ProductComponent } from './dashboard/products/products.component';
 
+import { HomeComponent } from './home';
+import { AuthGuard } from './_helpers';
+
+const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
+const usersModule = () => import('./users/users.module').then(x => x.UsersModule);
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'registration', component: RegistrationComponent },
-  // { path: 'create', component: CreateuserComponent,canActivate: [AuthguardGuard] },
-  { path: 'create', component: CreateuserComponent },
-  { path: 'edit', component: EdituserComponent},
-  { path: 'dashboard', component: DashboardComponent},
-  { path: 'product', component: ProductComponent}
+    { path: '', component: HomeComponent },
+    { path: 'users', loadChildren: usersModule },
+    { path: 'account', loadChildren: accountModule },
 
-]
+    // otherwise redirect to home
+    { path: '**', redirectTo: '' }
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule { }

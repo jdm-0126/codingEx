@@ -1,37 +1,17 @@
+﻿import { Component } from '@angular/core';
 
-import { Component } from '@angular/core';
-import { DataserviceService } from './service/dataservice.service';
+import { AccountService } from './_services';
+import { User } from './_models';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
-})
+@Component({ selector: 'app', templateUrl: 'app.component.html' })
 export class AppComponent {
-  loginbtn:boolean;
-  logoutbtn:boolean;
-  constructor(private dataService: DataserviceService) {
-    dataService.getLoggedInName.subscribe(name => this.changeName(name));
-    if(this.dataService.isLoggedIn())
-    {
-      console.log("loggedin");
-      this.loginbtn=false;
-      this.logoutbtn=true
-    }
-    else{
-     this.loginbtn=true;
-     this.logoutbtn=false
+    user: User;
+
+    constructor(private accountService: AccountService) {
+        this.accountService.user.subscribe(x => this.user = x);
     }
 
-
-}
-private changeName(name: boolean): void {
-  this.logoutbtn = name;
-  this.loginbtn = !name;
-}
-logout()
-{
-  this.dataService.deleteToken();
-  window.location.href = window.location.href;
-}
+    logout() {
+        this.accountService.logout();
+    }
 }
