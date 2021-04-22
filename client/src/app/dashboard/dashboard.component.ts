@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataserviceService } from '../service/dataservice.service';
+import { AccountService } from '../service/dataservice.service';
 import { Usermodule } from '../models/user.models';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ export class DashboardComponent implements OnInit {
   users: Usermodule[] = [];
   cat: any;
 
-  constructor(private dataService: DataserviceService,private router:Router) { }
+  constructor(private dataService: AccountService,private router:Router) { }
 
   ngOnInit() {
     this.getuserdetails();
@@ -21,9 +21,9 @@ export class DashboardComponent implements OnInit {
   }
 getuserdetails()
 {
-  this.dataService.getAllUsers(this.cat).subscribe(response =>
+  this.dataService.getAllUsers(this.cat).subscribe((response: any[]) =>
     {
-      this.users = response.map(item =>
+      this.users = response.map((item: { id: number; name: string; password: string; email: string; }) =>
       {
         return new Usermodule(
           item.id,
@@ -37,7 +37,7 @@ getuserdetails()
 deleteuserdetails(user:Usermodule)
 {
   this.dataService.removeUser(user.id)
-  .subscribe( data => {
+  .subscribe( (data: any) => {
     //this.users = this.users.filter(u => u !== user);
     this.getuserdetails();
   })

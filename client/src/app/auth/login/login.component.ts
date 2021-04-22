@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { DataserviceService } from '../../service/dataservice.service';
+import { Router, ActivatedRoute } from '@angular/router';
+
+import { AccountService, AlertService } from '../../service';
 
 @Component({
   selector: 'app-login',
@@ -10,30 +11,51 @@ import { DataserviceService } from '../../service/dataservice.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  formGroup: any;
-  constructor(private fb: FormBuilder,private dataService: DataserviceService,private router:Router) {
-    this.formGroup = this.fb.group({
-      email: ['', [Validators.required,Validators.minLength(1), Validators.email]],
+  formGroup: FormGroup;
+    loading = false;
+    submitted = false;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private dataService: AccountService,
+    private alertService: AlertService
+  ) {
+    this.formGroup = this.formBuilder.group({
+      email: ['', [Validators.required,Validators.minLength(1), Validators.required]],
       password: ['', Validators.required]
     });
    }
 
   ngOnInit() {
   }
-  postdata(formGroup:NgForm)
-  {
-    this.dataService.userlogin(formGroup.value.email,formGroup.value.password)
-      .pipe(first())
-      .subscribe(
-          data => {
-                const redirect = this.dataService.redirectUrl ? this.dataService.redirectUrl : '/dashboard';
-                this.router.navigate([redirect]);
+  get f() { return this.formGroup.controls; }
 
-          },
-          error => {
-              alert("Email or password is incorrect")
-          });
-  }
-  get email() { return this.formGroup.get('email'); }
-  get password() { return this.formGroup.get('password'); }
+    onSubmit() {
+        this.submitted = true;
+
+        // reset alerts on submit
+        this.alertService.clear();
+
+        // stop here if form is invalid
+        if (this.formGroup.invalid) {
+            return;
+        }
+
+        this.loading = true;
+        this.dataService.userlogin(this.f.email.value, this.f.password.value)
+            .pipe(first())
+            .subscribe({
+                next: () => {
+                    // get return url from query parameters or default to home page
+                    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+                    this.router.navigateByUrl(returnUrl);
+                },
+                error: error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                }
+            });
+    }
 }

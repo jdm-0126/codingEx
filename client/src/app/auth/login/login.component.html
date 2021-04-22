@@ -4,19 +4,27 @@
     </div>
     <div class="col-md-6 col-md-offset-3">
         <div class="jumbotron">
-            <form [attr.formGroup]="formGroup" (ngSubmit)="postdata(formGroup)" autocomplete="off" >
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" formControlName="email" autocomplete="off" class="form-control input-sm" placeholder="Email Address">
+          <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" formControlName="email" class="form-control"/>
 
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" formControlName="password" class="form-control" />
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
                 </div>
-                <div class="form-group">
-                    <label for="Password">Password</label>
-                    <input type="password" name="Password" formControlName="password"  autocomplete="off" class="form-control input-sm" placeholder="Password">
-
-                </div>
-                <button type="submit" class="btn btn-primary" [disabled]="!formGroup.valid">Login</button>
-            </form>
+            </div>
+            <div class="form-group">
+                <button [disabled]="loading" class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Login
+                </button>
+                <a routerLink="../create" class="btn btn-link">Register</a>
+            </div>
+        </form>
         </div>
     </div>
     <div class="col-md-3">

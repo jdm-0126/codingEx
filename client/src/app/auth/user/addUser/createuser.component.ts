@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { DataserviceService } from '../../../service/dataservice.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AccountService, AlertService } from '../../../service';
 
 @Component({
   selector: 'app-createuser',
@@ -10,11 +10,19 @@ import { DataserviceService } from '../../../service/dataservice.service';
   styleUrls: ['./createuser.component.css']
 })
 export class CreateuserComponent implements OnInit {
-  formGroup;
+  formGroup: FormGroup;
+  loading = false;
+    submitted = false;
 
-  constructor(private fb: FormBuilder,private dataService: DataserviceService,private router:Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+        private route: ActivatedRoute,
+        private router: Router,
+        private accountService: AccountService,
+        private alertService: AlertService
+  ) {
 
-    this.formGroup = this.fb.group({
+    this.formGroup = this.formBuilder.group({
       email: ['', [Validators.required,Validators.minLength(1), Validators.email]],
       password: ['', Validators.required],
       name: ['', Validators.required],
@@ -23,20 +31,31 @@ export class CreateuserComponent implements OnInit {
 
   ngOnInit() {
   }
-  postdata(formGroup:NgForm)
+  onSubmit()
   {
-    this.dataService.userregistration(formGroup.value.name,formGroup.value.email,formGroup.value.password)
-      .pipe(first())
-      .subscribe(
-          data => {
-              this.router.navigate(['dashboard']);
-          },
-          error => {
-          });
-  }
-  get email() { return this.formGroup.get('email'); }
-  get password() { return this.formGroup.get('password'); }
-  get name() { return this.formGroup.get('name'); }
-  // get token() { return this.formGroup.get('token'); }
+    this.submitted = true;
+
+    // reset alerts on submit
+    this.alertService.clear();
+
+    // stop here if form is invalid
+    if (this.formGroup.invalid) {
+        return;
+    }
+
+    this.loading = true;
+    this.accountService.userregistration(this.formGroup.value)
+        .pipe(first())
+        .subscribe({
+            next: () => {
+                this.alertService.success('Registration successful', { keepAfterRouteChange: true });
+                this.router.navigate(['../login'], { relativeTo: this.route });
+            },
+            error: (error: string) => {
+                this.alertService.error(error);
+                this.loading = false;
+            }
+        });
+}
 
 }

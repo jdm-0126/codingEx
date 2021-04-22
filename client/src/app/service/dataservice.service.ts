@@ -4,32 +4,33 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usermodule } from '../models/user.models';
 import { IBrand, ICategory, Productmodule } from '../models/product.models';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DataserviceService {
+export class AccountService {
   redirectUrl: any;
 
   baseUrl:string = "http://localhost:8000";
 @Output() getLoggedInName: EventEmitter<any> = new EventEmitter();
   constructor(private httpClient : HttpClient) { }
-  public userlogin(username: any, password: any) {
-    return this.httpClient.post<any>(this.baseUrl + '/login', { username, password })
+  public userlogin(email: any, password: any) {
+    return this.httpClient.post<any>(this.baseUrl + '/login', { email, password })
         .pipe(map(Usermodule => {
             this.setToken(Usermodule[0].token);
             this.getLoggedInName.emit(true);
             return Usermodule;
         }));
 }
-public userregistration(name: any,email: any,password: any) {
-  return this.httpClient.post<any>(this.baseUrl + '/user', { name,email, password })
+userregistration(user: Usermodule) {
+  return this.httpClient.post<any>(this.baseUrl + '/user', user)
       .pipe(map(Usermodule => {
           return Usermodule;
       }));
 }
-public updateuserdetails(id: any,name: any,email: any,password: any) {
-  return this.httpClient.put<any>(this.baseUrl + '/user/'+id, { name,email,password })
+updateuserdetails(id: number, params: any) {
+  return this.httpClient.put(`${environment.apiUrl}/users/${id}`, params)
     .pipe(map(Usermodule => {
           return Usermodule;
       }));
@@ -46,19 +47,26 @@ public getUserId(empid: number): Observable<Usermodule[]>
     (this.baseUrl+'/user/'+ empid );
   }
 
+  getById(id: number) {
+    return this.httpClient.get<Usermodule>(`${environment.apiUrl}/users/${id}`);
+}
 getAllUsers(id: number) : Observable<Usermodule[] > {
   return this.httpClient.get<Usermodule[]>(this.baseUrl+'/user');
 }
 
-getAllItems(id: number) : Observable<Productmodule[] > {
+getAllProducts() : Observable<Productmodule[] > {
   return this.httpClient.get<Productmodule[]>(this.baseUrl+'/product');
 }
-getAllCat(id: number) : Observable<ICategory[] > {
+getAllCat() : Observable<ICategory[] > {
   return this.httpClient.get<ICategory[]>(this.baseUrl+'/category');
 }
 
-getAllBrand(id: number) : Observable<IBrand[] > {
+getAllBrand() : Observable<IBrand[] > {
   return this.httpClient.get<IBrand[]>(this.baseUrl+'/brand');
+}
+
+getItems() : Observable<Productmodule[] > {
+  return this.httpClient.get<Productmodule[]>(this.baseUrl+'/item');
 }
 
 //token

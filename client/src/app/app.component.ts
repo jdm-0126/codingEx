@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { DataserviceService } from './service/dataservice.service';
+import { AccountService } from './service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { DataserviceService } from './service/dataservice.service';
 export class AppComponent {
   loginbtn:boolean;
   logoutbtn:boolean;
-  constructor(private dataService: DataserviceService) {
+  constructor(private dataService: AccountService) {
     dataService.getLoggedInName.subscribe(name => this.changeName(name));
     if(this.dataService.isLoggedIn())
     {

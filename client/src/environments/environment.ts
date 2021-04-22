@@ -5,8 +5,7 @@
 export const environment = {
   production: false,
   env_name: 'dev',
-  baseAPI: 'https://stageshrpeapi.precisiontechpartners.com/api/v1/',
-  baseHREF: 'https://stageshrpe.precisiontechpartners.com/',
-  recaptcha_key: '6LdkLG4UAAAAAPbdaebrxAZ6hYRdYOr334wJJoc5'
+  baseHREF: 'http://localhost:4200/',
+  apiUrl: 'http://localhost:8000/api/',
 };
 

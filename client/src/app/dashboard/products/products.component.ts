@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DataserviceService } from '../../service/dataservice.service';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { IBrand, ICategory, Productmodule } from 'src/app/models/product.models';
+import { IBrand, ICategory, IItem, Productmodule } from 'src/app/models/product.models';
+import { AccountService } from 'src/app/service';
 
 @Component({
   selector: 'app-product',
@@ -13,19 +13,20 @@ export class ProductComponent implements OnInit {
   products: Productmodule[] = [];
   categories: ICategory[] = [];
   brands: IBrand[] = [];
+  items: any;
   cat: any;
 
-  constructor(private dataService: DataserviceService,private router:Router) { }
+  constructor(private dataService: AccountService,private router:Router) { }
 
   ngOnInit() {
     this.getProdDetails();
     this.getCategories();
     this.getBrand();
-
+    this.getAllItems();
   }
   getProdDetails()
 {
-  this.dataService.getAllItems(this.cat).subscribe(response =>
+  this.dataService.getAllProducts().subscribe((response: Productmodule[]) =>
     {
       this.products = response;
     });
@@ -33,7 +34,7 @@ export class ProductComponent implements OnInit {
 
   getCategories() {
     {
-      this.dataService.getAllCat(this.cat).subscribe(response =>
+      this.dataService.getAllCat().subscribe((response: ICategory[]) =>
         {
           this.categories = response;
         });
@@ -42,9 +43,18 @@ export class ProductComponent implements OnInit {
 
   getBrand() {
     {
-      this.dataService.getAllBrand(this.cat).subscribe(response =>
+      this.dataService.getAllBrand().subscribe((response: IBrand[]) =>
         {
           this.brands = response;
+        });
+      }
+  }
+
+  getAllItems() {
+    {
+      this.dataService.getItems().subscribe((response) =>
+        {
+          this.items = response;
         });
       }
   }

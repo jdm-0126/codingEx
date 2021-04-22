@@ -25,12 +25,12 @@
           </tr>
           </tbody>
         </table> -->
-		
+
   	 <!-- <ul class="treeview">
         <li *ngFor="let product of products">
             <input type="checkbox" name="tall" id="tall">
             <label for="tall" class="custom-unchecked"> {{product.label}}</label>
-            
+
             <ul>
                  <li>
                      <input type="checkbox" name="tall-1" id="tall-1">
@@ -59,7 +59,7 @@
         <li>
             <input type="checkbox" name="short" id="short">
             <label for="short" class="custom-unchecked">Short Things</label>
-            
+
             <ul>
                  <li>
                      <input type="checkbox" name="short-1" id="short-1">
@@ -94,21 +94,11 @@
                           <div >
                             <input class='ml-4' type="checkbox" data-toggle='collapse' data-target='#collapsediv7'/> {{brand.label}}
                           </div>
-                          <div id='collapsediv7' class='collapse div7 ml-4'>
-                            <div>
-                              <input type="checkbox" data-toggle='collapse' /> {{item.label}
-                            </div>
-                            <div>
-                              <input type="checkbox" data-toggle='collapse' /> {{item.label}
-                            </div>
-                            <div>
-                              <input type="checkbox" data-toggle='collapse' /> {{item.label}
-                            </div>
-                            <div>
-                              <input type="checkbox" data-toggle='collapse' /> {{item.label}
-                            </div>
-                            <div>
-                              <input type="checkbox" data-toggle='collapse' /> {{item.label}
+                          <div *ngFor="let subItems of items">
+                            <div id='collapsediv7' class='collapse div7 ml-4'>
+                              <div>
+                                <input type="checkbox" data-toggle='collapse' /> {{subItems.label}
+                              </div>
                             </div>
                           </div>
                         </div>

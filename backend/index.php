@@ -39,7 +39,8 @@ function getProducts() {
 function getCategory() {
     try {
         $db = getConnection();
-        $stmt = $db->query('CALL get_productsCat()');
+        // $stmt = $db->query('CALL get_productsCat()');
+        $stmt = $db->query('select * from category');
         $data = $stmt->fetchAll(PDO::FETCH_OBJ);
         echo json_encode($data);
     } catch (PDOException $e) {
@@ -52,7 +53,8 @@ function getCategory() {
 function getBrand() {
     try {
         $db = getConnection();
-        $stmt = $db->query('CALL get_category_child()');
+        // $stmt = $db->query('CALL get_category_child()');
+        $stmt = $db->query('select * from brand');
         $data = $stmt->fetchAll(PDO::FETCH_OBJ);
         echo json_encode($data);
     } catch (PDOException $e) {
@@ -207,7 +209,7 @@ function getConnection() {
     header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
     $dbhost = "127.0.0.1";
     $dbuser = "root";
-    $dbpass = "root";
+    $dbpass = "";
     $dbname = "coding_chief";
     $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
