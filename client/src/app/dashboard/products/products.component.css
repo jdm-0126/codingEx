@@ -92,4 +92,33 @@
 li.nav-item a:hover {
     background: blue-light !important;
 }
-
+#parent {
+    margin: auto 0;
+  }
+  .treeview {
+    margin: 10px 0 0 20px;
+  }
+  .treeview .custom-unchecked {
+    background-position: 0 -1px;
+  }
+  .treeview .custom-unchecked:hover {
+    background-position: 0 -21px;
+  }
+  
+  /* Checked styles */
+  
+  .treeview .custom-checked { 
+    background-position: 0 -81px;
+  }
+  .treeview .custom-checked:hover { 
+    background-position: 0 -101px; 
+  }
+  
+  /* Indeterminate styles */
+  
+  .treeview .custom-indeterminate { 
+    background-position: 0 -141px; 
+  }
+  .treeview .custom-indeterminate:hover { 
+    background-position: 0 -121px; 
+  }

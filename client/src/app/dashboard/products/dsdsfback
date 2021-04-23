@@ -1,0 +1,42 @@
+ul class="treeview">
+        <div id="parent">
+          <li *ngFor="let product of products">
+              <input #saveProductCheckBox id="saveProductCheckBox" type="checkbox" [checked]="saveProduct"
+              (change)="onProductChanged(saveProductCheckBox.checked)" data-toggle='collapse'
+              attr.href="{{'#collapsediv' + product.route}}" ><label class="custom-unchecked"> {{product.label}}</label>
+              <div *ngIf="product.route">
+                <ul>
+                  <div attr.id="{{'collapsediv' + product.route}}" class='collapse div1 ml-4'>
+                    <li *ngFor="let cat of categories">
+                        <input type="checkbox" data-toggle='collapse' 
+                        attr.href="{{'#collapsediv' + cat.route}}"><label> {{cat.label}}</label>
+                          <div>
+                            <ul *ngIf=cat.route>
+                              <div attr.id="{{'collapsediv' + cat.route}}" class='collapse div1 ml-4'>
+                                <li *ngFor="let brand of brands">
+                                  <input type="checkbox" data-toggle='collapse' attr.href="{{'#collapsediv' + brand.route}}"><label >{{brand.label}}</label>
+                                  <div>
+                                    <ul *ngIf=brand.route>
+                                      <div attr.id="{{'collapsediv' + brand.route}}" class='collapse div1 ml-4'>
+                                        <li *ngFor="let item of items">
+                                            <input type="checkbox" attr.href="{{'#collapsediv' + item.route}}" data-toggle='collapse'>
+                                              <label for="tall-2-1">{{item.label}}</label>
+                                              <div>
+                                                <ul *ngIf=brand.route>
+                                                  <div attr.id="{{'collapsediv' + item.route}}" class='collapse div1 ml-4'></div>
+                                                  </ul>
+                                              </div>
+                                        </li>
+                                      </div>
+                                    </ul>
+                                </div>
+                              </li>
+                              </div>
+                          </ul>
+                          </div>
+                    </li>
+                  </div>
+                </ul></div>
+          </li>
+        </div>
+      </ul>

@@ -13,7 +13,7 @@ export class AddEditComponent implements OnInit {
     formBrand: FormGroup;
     formItem: FormGroup;
     id: any;
-    isAddMode = true;
+    isAddMode = false;
     loading = false;
     submitted = false;
     product_has_child = false;

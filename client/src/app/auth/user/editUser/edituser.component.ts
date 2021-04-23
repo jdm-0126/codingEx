@@ -10,7 +10,7 @@ import { AccountService, AlertService} from '../../../service';
   styleUrls: ['./edituser.component.css']
 })
 export class EdituserComponent implements OnInit {
-  formGroup: any;
+  formGroup: FormGroup;
   id: any;
   isAddMode: boolean = false;
   loading = false;
@@ -22,20 +22,22 @@ export class EdituserComponent implements OnInit {
     private router: Router,
     private accountService: AccountService,
     private alertService: AlertService)
-   {}
+   {
+    this.formGroup = this.formBuilder.group({
+      name: ['', Validators.required],
+      email: ['', Validators.required],
+      password: ['']
+  });
+   }
 
   ngOnInit() {
    // password not required in edit mode
-   const passwordValidators = [Validators.minLength(6)];
-   if (this.isAddMode) {
-       passwordValidators.push(Validators.required);
-   }
+   
+  //  if (this.isAddMode) {
+  //      passwordValidators.push(Validators.required);
+  //  }
 
-   this.formGroup = this.formBuilder.group({
-       name: ['', Validators.required],
-       email: ['', Validators.required],
-       password: ['', passwordValidators]
-   });
+   
 
    if (!this.isAddMode) {
     this.accountService.getById(this.id)
