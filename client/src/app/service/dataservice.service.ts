@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usermodule } from '../models/user.models';
-import { IBrand, ICategory, IItem, Productmodule } from '../models/product.models';
+import { ICategory, Productmodule } from '../models/product.models';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -49,7 +49,7 @@ getUserId(empid: number): Observable<Usermodule[]>
   getById(id: number) {
     return this.httpClient.get<Usermodule>(`${environment.apiUrl}/user/${id}`);
 }
-getAllUsers(id: number) : Observable<Usermodule[] > {
+getAllUsers() : Observable<Usermodule[] > {
   return this.httpClient.get<Usermodule[]>(this.baseUrl+'/user');
 }
 
@@ -69,18 +69,7 @@ addCat(cat: ICategory) {
           return ICategory;
       }));
 }
-addBrand(brand: IBrand) {
-  return this.httpClient.post<any>(this.baseUrl + '/brand', brand)
-      .pipe(map(IBrand => {
-          return IBrand;
-      }));
-}
-addItem(item: IItem) {
-  return this.httpClient.post<any>(this.baseUrl + '/item', item)
-      .pipe(map(IItem => {
-          return IItem;
-      }));
-}
+
 updateProduct(id: number, params: any) {
   return this.httpClient.put(`${environment.apiUrl}/product/${id}`, params)
     .pipe(map(Productmodule => {
@@ -90,14 +79,6 @@ updateProduct(id: number, params: any) {
 
 getAllCat() : Observable<ICategory[] > {
   return this.httpClient.get<ICategory[]>(this.baseUrl+'/category');
-}
-
-getAllBrand() : Observable<IBrand[] > {
-  return this.httpClient.get<IBrand[]>(this.baseUrl+'/brand');
-}
-
-getItems() : Observable<IItem[] > {
-  return this.httpClient.get<IItem[]>(this.baseUrl+'/item');
 }
 
 //token

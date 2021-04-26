@@ -1,8 +1,8 @@
 export interface Productmodule{
-    label_id: number;
-    label: string;
-    route: boolean;
-    product_id?: ICategory['label_id'];
+  product_id: number;
+  label: string;
+  label_id: number;
+  parent_id: number;
 
     // constructor(label_id:number,label: string,route:boolean) {
     //   this.label_id = label_id;
@@ -11,11 +11,11 @@ export interface Productmodule{
     // }
 }
 
-export interface ICategory extends Productmodule {
-  label_id: number;
+export interface ICategory {
+  cat_id: number;
   label: string;
-  route: boolean;
-  product_id: Productmodule["label_id"];
+  label_id: number;
+  parent_id: number;
 
   // constructor(label_id:number,label: string,route:boolean, product_id: number) {
   //   this.label_id = label_id;
@@ -25,11 +25,11 @@ export interface ICategory extends Productmodule {
   // }
 }
 
-export interface IBrand extends ICategory{
-  label_id: number;
-  label: string;
-  route: boolean;
-  category_id: ICategory["label_id"];
+// export interface IBrand extends ICategory{
+//   label_id: number;
+//   label: string;
+//   route: boolean;
+//   category_id: ICategory["label_id"];
 
   // constructor(label_id:number,label: string,route:boolean, category_id: number) {
   //   this.label_id = label_id;
@@ -37,13 +37,13 @@ export interface IBrand extends ICategory{
   //   this.route = route;
   //   this.category_id = category_id;
   // }
-}
+// }
 
-export interface IItem extends IBrand{
-  label_id: number;
-  label: string;
-  route: boolean;
-  brand_id: IBrand['label_id'];
+// export interface IItem extends IBrand{
+//   label_id: number;
+//   label: string;
+//   route: boolean;
+//   brand_id: IBrand['label_id'];
 
   // constructor(label_id:number,label: string,route:boolean, brand_id: number) {
   //   this.label_id = label_id;
@@ -51,4 +51,4 @@ export interface IItem extends IBrand{
   //   this.route = route;
   //   this.brand_id = brand_id;
   // }
-}
+// }

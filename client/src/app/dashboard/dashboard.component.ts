@@ -21,22 +21,14 @@ export class DashboardComponent implements OnInit {
   }
 getuserdetails()
 {
-  this.dataService.getAllUsers(this.cat).subscribe((response: any[]) =>
+  this.dataService.getAllUsers().subscribe((response: any[]) =>
     {
-      this.users = response.map((item: { id: number; name: string; password: string; email: string; }) =>
-      {
-        return new Usermodule(
-          item.id,
-            item.name,
-            item.password,
-            item.email
-        );
-      });
+      this.users = response;
     });
 }
 deleteuserdetails(user:Usermodule)
 {
-  this.dataService.removeUser(user.id)
+  this.dataService.removeUser(user.user_id)
   .subscribe( (data: any) => {
     //this.users = this.users.filter(u => u !== user);
     this.getuserdetails();
@@ -45,7 +37,7 @@ deleteuserdetails(user:Usermodule)
 }
 updateUser(user: Usermodule): void {
   window.localStorage.removeItem("editId");
-  window.localStorage.setItem("editId", user.id.toString());
+  window.localStorage.setItem("editId", user.user_id.toString());
   this.router.navigate(['edit']);
 };
 addUser(): void {

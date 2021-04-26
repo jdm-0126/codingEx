@@ -12,11 +12,11 @@ const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   // { path: 'create', component: CreateuserComponent,canActivate: [AuthguardGuard] },
-  { path: 'create', component: CreateuserComponent },
-  { path: 'edit', component: EdituserComponent},
-  { path: 'dashboard', component: DashboardComponent},
-  { path: 'addproduct', component: AddEditComponent},
-  { path: 'product', component: ProductComponent}
+  { path: 'create', component: CreateuserComponent,  },
+  { path: 'edit', component: EdituserComponent, },
+  { path: 'dashboard', component: DashboardComponent, },
+  { path: 'addproduct', component: AddEditComponent, },
+  { path: 'product', component: ProductComponent, }
 
 ]
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { IBrand, ICategory, IItem, Productmodule } from 'src/app/models/product.models';
+import { ICategory, Productmodule } from 'src/app/models/product.models';
 import { AccountService } from 'src/app/service';
 
 @Component({
@@ -14,16 +14,15 @@ export class ProductComponent implements OnInit {
   categories: any = [];
   brands: any = [];
   items: any =[];
-  saveProduct: boolean = false;
+  saveProduct: boolean = true;
   saveCat: boolean = false;
   constructor(private dataService: AccountService,private router:Router) { }
 
   ngOnInit() {
     this.getProdDetails();
     this.getCategories();
-    this.getBrand();
-    this.getAllItems();
   }
+
   getProdDetails() {
           this.dataService.getAllProducts().subscribe((response: Productmodule[]) =>
             {
@@ -38,19 +37,13 @@ export class ProductComponent implements OnInit {
         });
   }
 
-  getBrand() {
-      this.dataService.getAllBrand().subscribe((response: IBrand[]) =>
-        {
-          this.brands = response;
-        });
-  }
+  // getBrand() {
+  //     this.dataService.getAllBrand().subscribe((response: IBrand[]) =>
+  //       {
+  //         this.brands = response;
+  //       });
+  // }
 
-  getAllItems() {
-      this.dataService.getItems().subscribe((response) =>
-        {
-          this.items = response;
-        });
-  }
 
   deleteProduct(product:Productmodule) {
     this.dataService.removeUser(product.label_id)

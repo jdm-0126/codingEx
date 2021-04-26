@@ -19,58 +19,84 @@ SET time_zone = "+00:00";
 --
 -- Database: `jdm`
 --
-
-
 CREATE TABLE IF NOT EXISTS `user` (
-`id` int(11) NOT NULL AUTO_INCREMENT,
+`user_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
   `token` varchar(150) DEFAULT NULL,
-  PRIMARY KEY (`Id`)
+  PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE IF NOT EXISTS `products` (
-`label_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `product` (
+`product_id` int(11) NOT NULL AUTO_INCREMENT,
   `label` varchar(50) DEFAULT NULL,
-  `route` boolean DEFAULT NULL,
-  PRIMARY KEY (`label_id`)
+  `label_id` int(10) DEFAULT NULL,
+  `parent_id` int(10) NULL,
+  PRIMARY KEY (`product_id`),
+  FOREIGN KEY (parent_id) REFERENCES user(user_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `category` (
-`label_id` int(11) NOT NULL AUTO_INCREMENT,
+`cat_id` int(11) NOT NULL AUTO_INCREMENT,
   `label` varchar(50) DEFAULT NULL,
-  `route` boolean DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`label_id`),
-  FOREIGN KEY (product_id) REFERENCES products(label_id)
+  `label_id` int(10) DEFAULT NULL,
+  `parent_id` int(10) NULL,
+  PRIMARY KEY (`cat_id`),
+  FOREIGN KEY (parent_id) REFERENCES product(product_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `brand` (
-  `label_id` int(11) NOT NULL AUTO_INCREMENT,
-  `label` varchar(50) DEFAULT NULL,
-  `route` boolean DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`label_id`),
-  FOREIGN KEY (category_id) REFERENCES category(label_id)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+-- CREATE TABLE IF NOT EXISTS `user` (
+-- `id` int(11) NOT NULL AUTO_INCREMENT,
+--   `name` varchar(50) DEFAULT NULL,
+--   `email` varchar(100) DEFAULT NULL,
+--   `password` varchar(50) DEFAULT NULL,
+--   `token` varchar(150) DEFAULT NULL,
+--   PRIMARY KEY (`Id`)
+-- ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `item` (
-`label_id` int(11) NOT NULL AUTO_INCREMENT,
-  `label` varchar(50) DEFAULT NULL,
-  `route` boolean DEFAULT NULL,
-  `brand_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`label_id`),
-  FOREIGN KEY (brand_id) REFERENCES brand(label_id)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- CREATE TABLE IF NOT EXISTS `products` (
+-- `label_id` int(11) NOT NULL AUTO_INCREMENT,
+--   `label` varchar(50) DEFAULT NULL,
+--   `parent_id` int(10) NULL,
+--   PRIMARY KEY (`label_id`)
+-- ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- CREATE TABLE IF NOT EXISTS `category` (
+-- `label_id` int(11) NOT NULL AUTO_INCREMENT,
+--   `label` varchar(50) DEFAULT NULL,
+--   `route` boolean DEFAULT NULL,
+--   `product_id` int(11) DEFAULT NULL,
+--   PRIMARY KEY (`label_id`),
+--   FOREIGN KEY (product_id) REFERENCES products(label_id)
+-- ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- CREATE TABLE IF NOT EXISTS `brand` (
+--   `label_id` int(11) NOT NULL AUTO_INCREMENT,
+--   `label` varchar(50) DEFAULT NULL,
+--   `route` boolean DEFAULT NULL,
+--   `category_id` int(11) DEFAULT NULL,
+--   PRIMARY KEY (`label_id`),
+--   FOREIGN KEY (category_id) REFERENCES category(label_id)
+-- ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- CREATE TABLE IF NOT EXISTS `item` (
+-- `label_id` int(11) NOT NULL AUTO_INCREMENT,
+--   `label` varchar(50) DEFAULT NULL,
+--   `route` boolean DEFAULT NULL,
+--   `brand_id` int(11) DEFAULT NULL,
+--   PRIMARY KEY (`label_id`),
+--   FOREIGN KEY (brand_id) REFERENCES brand(label_id)
+-- ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 INSERT INTO `user` (`name`, `email`, `password`, `token`) VALUES
 ('jon', 'kenchie@wopmail.com', 'password', 'asdafasasda');
 
 
-INSERT INTO `products` (`label_id`, `label`, `route`) VALUES
-('Dames', true);
+INSERT INTO `products` (`label`, `route`) VALUES
+('Dames', 0);
 
 INSERT INTO `category` (`label`, `route`, `product_id`) VALUES
 ('Accessories', true, 0);
@@ -137,4 +163,10 @@ get_brand_child()
 BEGIN
 	SELECT item.label, item.route, brand_id FROM item INNER JOIN 
   	brand ON item.brand_id = brand.label_id;
+END
+
+get_item_dropdowm()
+BEGIN
+  SELECT item.label, item.route, brand_id FROM item INNER JOIN 
+  	brand ON item.brand_id = brand.label_id WHERE brand_id = 12
 END
