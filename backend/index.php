@@ -1,22 +1,25 @@
 <?php
 header('Access-Control-Allow-Origin:*'); 
-header('Access-Control-Allow-Headers:X-Request-With');
+// header('Access-Control-Allow-Headers:X-Request-With');
 header('Access-Control-Allow-Methods: DELETE, PUT, GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+// header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 require 'Slim/Slim.php';
 
 \Slim\Slim::registerAutoloader();
 
 $app = new \Slim\Slim();
+$app->options('/{routes:.+}', 'addRoutes');
+// CORS
+// $app->add('addHandler', 'handler'); 
 
 $app->get('/product', 'getProducts');
 $app->get('/category', 'getCategory');
-$app->get('/brand', 'getBrand');
-$app->get('/item/:id', 'getItem');
-$app->get('/item', 'getItems');
-$app->get('/itemdrop', 'getBrandSub');
+// $app->get('/brand', 'getBrand');
+// $app->get('/item/:id', 'getItem');
+// $app->get('/item', 'getItems');
+// $app->get('/itemdrop', 'getBrandSub');
 
-$app->post('/item', 'postItems');
+// $app->post('/item', 'postItems');
 $app->post('/product', 'addProduct');
 $app->put('/product/:id', 'updateProduct');
 $app->delete('/product/:id', 'deleteProduct');
@@ -30,8 +33,19 @@ $app->put('/user/:id', 'updateUser');
 $app->delete('/user/:id', 'deleteUser');
 
 $app->run();
+function addRoutes() {
+        
+    return $response;
+};
 
-//Select All
+function handler($request, $handler) {
+    $response = $handler->handle($request);
+    return $response
+            ->withHeader('Access-Control-Allow-Origin: *')
+            ->withHeader('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
+        };
+
 function getProducts() {
     try {
         $db = getConnection();
@@ -82,17 +96,17 @@ function getItems() {
     
 }
 //Select All
-function getBrand() {
-    try {
-        $db = getConnection();
-        $stmt = $db->query('CALL get_category_child()');
-        $data = $stmt->fetchAll(PDO::FETCH_OBJ);
-        echo json_encode($data);
-    } catch (PDOException $e) {
-        echo $e.getMessage();
-    }
+// function getBrand() {
+//     try {
+//         $db = getConnection();
+//         $stmt = $db->query('CALL get_category_child()');
+//         $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+//         echo json_encode($data);
+//     } catch (PDOException $e) {
+//         echo $e.getMessage();
+//     }
     
-}
+// }
 
 //Select All
 function getUsers() {
@@ -108,11 +122,11 @@ function getUsers() {
 }
 //Select All
 function getUser($id) {
-    $sql = "select * from user where id = :id";
+    $sql = "select * from user where user_id =".$id;
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam('id', $id);
+        $stmt->bindParam('user_id', $id);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_OBJ);
         echo json_encode($data);
@@ -123,11 +137,11 @@ function getUser($id) {
 
 //Select All
 function getItem($id) {
-    $sql = "select * from item where label_id = :id";
+    $sql = "select * from item where product_id = :id";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam('id', $id);
+        $stmt->bindParam('product_id', $id);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_OBJ);
         echo json_encode($data);
@@ -182,14 +196,19 @@ function postItems() {
 function addProduct() {
     global $app;
     $data = json_decode($app->request()->getBody());
-    $sql = "insert into products values(?,?,?)";
+    $sql = "insert into product values(?,?,?,?)";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(1, $data->label_id);
+        $stmt->bindParam(1, $data->product_id);
         $stmt->bindParam(2, $data->label);
-        $stmt->bindParam(3, $data->route);
+        $stmt->bindParam(3, $data->label_id);
+        $stmt->bindParam(4, $data->parent_id);
         $stmt->execute();
+        // $stmt
+        // ->withHeader('Access-Control-Allow-Origin', 'http://localhost:8000')
+        // ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        // ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     } catch (PDOException $e) {
         echo $e.getMessage();
     }
@@ -199,14 +218,15 @@ function addProduct() {
 function addUser() {
     global $app;
     $data = json_decode($app->request()->getBody());
-    $sql = "insert into user values(?,?,?,?)";
+    $sql = "insert into user values(?,?,?,?,?)";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(1, $data->id);
+        $stmt->bindParam(1, $data->user_id);
         $stmt->bindParam(2, $data->name);
         $stmt->bindParam(3, $data->email);
         $stmt->bindParam(4, $data->password);
+        $stmt->bindParam(5, $data->token);
         $stmt->execute();
     } catch (PDOException $e) {
         echo $e.getMessage();
@@ -251,11 +271,11 @@ function updateUser($id) {
 
 //Delete Data
 function deleteProduct($id) {
-    $sql = "delete from products where label_id = :id";
+    $sql = "delete from product where product_id =".$id;
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam('id', $id);
+        $stmt->bindParam('product_id', $id);
         $stmt->execute();
     } catch (PDOException $e) {
         echo $e.getMessage();

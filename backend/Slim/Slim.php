@@ -305,7 +305,7 @@ class Slim
             'cookies.secure' => false,
             'cookies.httponly' => false,
             // Encryption
-            'cookies.secret_key' => 'CHANGE_ME',
+            'cookies.secret_key' => '123123',
             'cookies.cipher' => MCRYPT_RIJNDAEL_256,
             'cookies.cipher_mode' => MCRYPT_MODE_CBC,
             // HTTP
@@ -471,7 +471,7 @@ class Slim
     {
         $args = func_get_args();
 
-        return $this->mapRoute($args)->via(\Slim\Http\Request::METHOD_GET, \Slim\Http\Request::METHOD_HEAD);
+        return $this->mapRoute($args)->via(\Slim\Http\Request::METHOD_GET, \Slim\Http\Request::METHOD_GET);
     }
 
     /**
@@ -483,7 +483,7 @@ class Slim
     {
         $args = func_get_args();
 
-        return $this->mapRoute($args)->via(\Slim\Http\Request::METHOD_POST);
+        return $this->mapRoute($args)->via(\Slim\Http\Request::METHOD_POST, \Slim\Http\Request::METHOD_POST);
     }
 
     /**
@@ -495,7 +495,7 @@ class Slim
     {
         $args = func_get_args();
 
-        return $this->mapRoute($args)->via(\Slim\Http\Request::METHOD_PUT);
+        return $this->mapRoute($args)->via(\Slim\Http\Request::METHOD_PUT, \Slim\Http\Request::METHOD_PUT);
     }
 
     /**
@@ -507,7 +507,7 @@ class Slim
     {
         $args = func_get_args();
 
-        return $this->mapRoute($args)->via(\Slim\Http\Request::METHOD_PATCH);
+        return $this->mapRoute($args)->via(\Slim\Http\Request::METHOD_PATCH, \Slim\Http\Request::METHOD_PATCH);
     }
 
     /**
@@ -519,7 +519,7 @@ class Slim
     {
         $args = func_get_args();
 
-        return $this->mapRoute($args)->via(\Slim\Http\Request::METHOD_DELETE);
+        return $this->mapRoute($args)->via(\Slim\Http\Request::METHOD_DELETE, \Slim\Http\Request::METHOD_DELETE);
     }
 
     /**
@@ -531,7 +531,7 @@ class Slim
     {
         $args = func_get_args();
 
-        return $this->mapRoute($args)->via(\Slim\Http\Request::METHOD_OPTIONS);
+        return $this->mapRoute($args)->via(\Slim\Http\Request::METHOD_OPTIONS, \Slim\Http\Request::METHOD_OPTIONS);
     }
 
     /**
