@@ -29,3 +29,41 @@
                         </div>
                     </div>
                   </ul>
+
+
+
+
+                  <input type="checkbox" data-toggle='collapse'
+                  attr.href="{{'#collapsediv' + i}}" >
+                  <label class="custom-unchecked"> {{i + product.label + product.label_id}}</label>
+                    <div *ngIf="product.parent_id">
+                      <ul class="nav flex-column">
+                        <div attr.id="{{'collapsediv' + i}}" class='collapse div1 ml-4'>
+                          <div *ngFor="let cat of categories">
+                            <div *ngIf="product.parent_id == 2">
+                              <input type="checkbox" data-toggle='collapse' 
+                              attr.href="{{'#collapsediv' + cat.route}}"><label> {{cat.label}}</label>
+                                <div>
+                                  <ul *ngIf=cat.route>
+                                    <div attr.id="{{'collapsediv' + cat.route}}" class='collapse div1 ml-4'>
+                                      <div *ngFor="let brand of brands">
+                                        <input type="checkbox" data-toggle='collapse' attr.href="{{'#collapsediv' + brand.route}}"><label >{{brand.label}}</label>
+                                        <div>
+                                          <ul>
+                                            <div *ngIf=brand.route class='collapse div1 ml-4' attr.id="{{'collapsediv' + brand.route}}">
+                                              <div *ngFor="let item of items" >
+                                                    {{item.label}}
+                                              </div>
+                                            </div>
+                                          </ul>
+                                      </div>
+                                      </div>
+                                    </div>
+                                </ul>
+                              </div>
+                            </div>
+                            </div>
+                        </div>
+                      </ul>
+                  
+                  </div>

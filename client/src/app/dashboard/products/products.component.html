@@ -8,7 +8,6 @@
           <tr>
 
             <th>Name</th>
-            <th>With associated items</th>
             <th>No of association</th>
             <th>Delete</th>
             <th>Edit</th>
@@ -18,7 +17,6 @@
           <tr *ngFor="let product of products">
 
             <td>{{product.label}}</td>
-            <td>{{product.route == 1 ? "Yes" : "No"}}</td>
             <td>{{products.length}}</td>
             <td><button class="btn btn-danger" (click)="deleteProduct(product)"> Delete</button></td>
               <td>  <button class="btn btn-success" (click)="updateProduct(product)" style="margin-left: 20px;"> Edit</button></td>
@@ -28,38 +26,31 @@
 
         <ul>
           <div *ngFor="let product of products; let i = index">
-                <input type="checkbox" data-toggle='collapse'
-                attr.href="{{'#collapsediv' + product.route}}" ><label class="custom-unchecked"> {{product.label}}</label>
-                <div *ngIf="product.route">
-                  <ul class="nav flex-column">
-                    <div attr.id="{{'collapsediv' + product.label_id}}" class='collapse div1 ml-4'>
-                      <div *ngFor="let cat of categories">
-                          <input type="checkbox" data-toggle='collapse' 
-                          attr.href="{{'#collapsediv' + cat.route}}"><label> {{cat.label}}</label>
-                            <div>
-                              <ul *ngIf=cat.route>
-                                <div attr.id="{{'collapsediv' + cat.route}}" class='collapse div1 ml-4'>
-                                  <div *ngFor="let brand of brands">
-                                    <input type="checkbox" data-toggle='collapse' attr.href="{{'#collapsediv' + brand.route}}"><label >{{brand.label}}</label>
-                                    <div>
-                                      <ul>
-                                        <div *ngIf=brand.route class='collapse div1 ml-4' attr.id="{{'collapsediv' + brand.route}}">
-                                          <div *ngFor="let item of items" >
-                                                {{item.label}}
-                                          </div>
-                                        </div>
-                                      </ul>
-                                  </div>
-                                  </div>
-                                </div>
-                            </ul>
-                            </div>
+            <div *ngIf="product.parent_id == 1">
+              <input type="checkbox" *ngIf="product.product_id == 2" data-toggle='collapse'
+              data-toggle='collapse' attr.href="{{'#collapsediv' + product.product_id}}">
+              <label> {{ product.label}}</label>
+              <div *ngFor="let cat of products">
+                <div *ngIf="product.product_id == cat.label_id" attr.id="{{'collapsediv' + cat.label_id}}"
+                  class='collapse div1 ml-4'>
+                  <input type="checkbox" data-toggle='collapse' attr.href="{{'#collapsediv' + cat.product_id}}"><label> {{
+                    cat.label}}</label>
+                  <div attr.id="{{'collapsediv' + cat.product_id}}" class='collapse div1 ml-4'>
+                    <div *ngFor="let brand of products; let k = index">
+                      <div *ngIf="brand.label_id == cat.product_id">
+                        <input type="checkbox" data-toggle='collapse' attr.href="{{'#collapsediv' + brand.label_id}}">
+                        <label> {{brand.label}}</label>
+                        <div attr.id="{{'collapsediv' + cat.product_id}}" class='collapse div1 ml-4'>
                         </div>
+                      </div>
                     </div>
-                  </ul>
+                  </div>
+                </div>
               </div>
+            </div>
           </div>
-      </ul>
+        
+        </ul>
   </div>
 </div>
 </div>
